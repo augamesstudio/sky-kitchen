@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Game Design – Sky Kitchen</title>
+<meta name="description" content="The game design of Sky Kitchen: the core loop, every ingredient, machine, kitchen tool, sky obstacle and power-up, the levels and the economy.">
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="css/site.css">
+<script src="js/site.js" defer></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/icon.webp" alt=""><span>Sky Kitchen</span></a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav">
+      <a href="./">Home</a>
+      <a href="design.html" aria-current="page">Game Design</a>
+      <a href="art.html">Art</a>
+      <a href="support.html">Support</a>
+      <a href="privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="sky page-head">
+    <div class="wrap">
+      <h1 class="outlined">Game Design</h1>
+      <p>Everything in Sky Kitchen, how it works and why.</p>
+    </div>
+    <div class="clouds"></div>
+  </section>
+
+  <div class="wrap doc" style="padding-top:40px">
+    <nav class="toc" aria-label="Contents">
+      <b>Contents</b>
+      <a href="#overview">Overview</a>
+      <a href="#pillars">Design pillars</a>
+      <a href="#loop">Core loop</a>
+      <a href="#ingredients">Ingredients</a>
+      <a href="#machines">Machines &amp; recipes</a>
+      <a href="#tools">Kitchen tools</a>
+      <a href="#sky">The sky</a>
+      <a href="#powerups">Power-ups &amp; boosters</a>
+      <a href="#levels">Levels</a>
+      <a href="#economy">Economy</a>
+      <a href="#chef">The chef</a>
+      <a href="#tech">Under the hood</a>
+    </nav>
+
+    <div>
+      <!-- 1 -->
+      <section id="overview">
+        <h2><span class="num">1</span>Overview</h2>
+        <p class="intro"><strong>Ingredients rain continuously from the sky. The player places kitchen tools in the air to steer them into machines, and the production line they build has to fill the order before the clock runs out.</strong></p>
+        <div class="table-scroll">
+          <table class="plain">
+            <tr><th>Genre</th><td>Physics puzzle, hybrid casual: a production-line game in the sky</td></tr>
+            <tr><th>Platform</th><td>Android, portrait, one hand</td></tr>
+            <tr><th>Session</th><td>Levels of about one minute, with a short setup countdown before the clock starts</td></tr>
+            <tr><th>Content</th><td>50 levels in the Sky world; the Space world (levels 51–100) is coming</td></tr>
+            <tr><th>Business model</th><td>Free. Rewarded ads only, always the player's choice. No purchases</td></tr>
+            <tr><th>Audience</th><td>13+, casual puzzle players who like to tinker</td></tr>
+            <tr><th>Engine</th><td>Unity 6, URP, PhysX</td></tr>
+          </table>
+        </div>
+        <div class="note"><strong>What it is not:</strong> a build-then-watch puzzle. Food never stops falling, so Sky Kitchen is a <em>throughput</em> game. A missed fruit never ends the level; it only slows the order. The player never hits a wall, and a better line is always one tweak away.</div>
+      </section>
+
+      <!-- 2 -->
+      <section id="pillars">
+        <h2><span class="num">2</span>Design pillars</h2>
+        <div class="pillars">
+          <div class="card pillar">
+            <div class="icon">01</div>
+            <h3>Trying is free</h3>
+            <p>A tool can be moved, turned or taken back at any moment, and it returns to stock in full, instantly. A level hands out a stock of tools; it is spent on <em>placing</em>, never on <em>trying</em>.</p>
+          </div>
+          <div class="card pillar">
+            <div class="icon">02</div>
+            <h3>Honest physics</h3>
+            <p>Food moves only by physics: real bounces, slides and rolls. No tool carries food along a scripted path, so what the player sees is always what really happened.</p>
+          </div>
+          <div class="card pillar">
+            <div class="icon">03</div>
+            <h3>One angle, one outcome</h3>
+            <p>Tools turn in nine fixed steps, from flat to steep, left and right. A chef's hat always throws along the way it faces, wherever the food came from. That is where learnability comes from.</p>
+          </div>
+          <div class="card pillar">
+            <div class="icon">04</div>
+            <h3>Forgiving targets</h3>
+            <p>Machine mouths are wide funnels, nearly six fruits across: hitting the neighbourhood is enough. The delivery bin is wide too. The puzzle is routing, not aiming.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section id="loop">
+        <h2><span class="num">3</span>Core loop</h2>
+        <div class="grid four steps" style="margin-top:34px">
+          <div class="card step"><img src="img/renders/chef-talk-cutout.webp" alt=""><h3>Read the order</h3><p>The chef's briefing shows the drinks to make, the time, the tools in stock and any bonus.</p></div>
+          <div class="card step"><img src="img/renders/peel-cutout.webp" alt=""><h3>Build</h3><p>Drag tools into the sky and turn them, during the setup countdown and while the clock runs.</p></div>
+          <div class="card step"><img src="img/items/machine-juice.webp" alt=""><h3>Watch &amp; tweak</h3><p>Food flows through the line. Pause, play at 1x or 2x, and fix what misses.</p></div>
+          <div class="card step"><img src="img/items/mango-juice.webp" alt=""><h3>Deliver</h3><p>Products fall into the bin. Fill every line of the order before time runs out to win coins.</p></div>
+        </div>
+        <div class="grid two" style="margin-top:28px">
+          <div class="card">
+            <h3 style="color:var(--navy)">The clock is the player's</h3>
+            <p>Stop, 1x or 2x. Stopping time freezes the food in mid-air, so the player can study the line and plan the next tool without pressure. Building never needs the clock stopped.</p>
+          </div>
+          <div class="card">
+            <h3 style="color:var(--navy)">The line tells you what is wrong</h3>
+            <p>Each machine wears a status ring: green when working, amber when starving, red when blocked. A problem off-screen shows an arrow at the edge; a tap slides the camera to it.</p>
+          </div>
+          <div class="card">
+            <h3 style="color:var(--navy)">Wrong ingredients bounce back</h3>
+            <p>Feed a machine something it cannot use and it throws it straight back at the player, and the machine pays a short delay before its next product.</p>
+          </div>
+          <div class="card">
+            <h3 style="color:var(--navy)">The bonus</h3>
+            <p>An order line can carry a bonus: deliver a set number of that drink and an extra tool arrives, once. It is the only way stock grows during a level, and it is always stated before the level starts.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section id="ingredients">
+        <h2><span class="num">4</span>Ingredients</h2>
+        <p class="intro">Ingredients fall from droppers at the top of the level, one at a time, on a steady beat. They are free and never run out; what is scarce is how fast they come. Every new food is introduced by the chef the first time it appears.</p>
+        <div class="grid four">
+          <div class="card item"><div class="pic flat"><img src="img/items/banana.webp" alt=""></div><div class="tags"><span class="tag">Fruit</span><span class="tag yellow">Level 1</span></div><h3>Banana</h3><p>The first fruit. Makes banana milkshakes, and later banana ice cream.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/items/milk.webp" alt=""></div><div class="tags"><span class="tag">Dairy</span><span class="tag yellow">Level 1</span></div><h3>Milk</h3><p>Goes into every milkshake. From level 26 it has a second place to go: the cream machine.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/items/strawberry.webp" alt=""></div><div class="tags"><span class="tag">Fruit</span><span class="tag pink">Small</span></div><h3>Strawberry</h3><p>The small fruit. It falls twice as often as the others, and a shake takes <strong>two</strong>, so a strawberry line has twice as much in the air.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/items/apple.webp" alt=""></div><div class="tags"><span class="tag">Fruit</span></div><h3>Apple</h3><p>Juice only. The milkshake machine does not take apples, so they must be kept out of it.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/items/water.webp" alt=""></div><div class="tags"><span class="tag">Water</span><span class="tag yellow">Level 9</span></div><h3>Water</h3><p>The juicer's second ingredient. A tank the player has to keep supplied, not a bottomless reserve.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/items/mango.webp" alt=""></div><div class="tags"><span class="tag">Fruit</span><span class="tag yellow">Level 12</span></div><h3>Mango</h3><p>The first fruit two machines take: shake or juice. The player decides where each mango goes.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/items/cream.webp" alt=""></div><div class="tags"><span class="tag orange">Made, not dropped</span><span class="tag yellow">Level 26</span></div><h3>Cream</h3><p>The first <em>intermediate</em>. The cream machine whips it from milk, and it must be steered from one machine into another. It is never sold.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/items/dropper.webp" alt=""></div><div class="tags"><span class="tag">Source</span></div><h3>Dropper</h3><p>Hangs at the top of the level and drops its ingredient on a steady beat. Its badge shows what it drops.</p></div>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section id="machines">
+        <h2><span class="num">5</span>Machines &amp; recipes</h2>
+        <p class="intro"><strong>One machine per kind of product, and the fruit decides the flavour.</strong> A milkshake machine makes every milkshake: feed it a banana and it makes a banana shake, feed it a mango and it makes a mango shake. The player never opens a recipe menu; they control what comes out by controlling what goes in. Machines are placed by the level. From level 6 the player can move them, but never remove them.</p>
+        <div class="grid four">
+          <div class="card item"><div class="pic"><img src="img/renders/machine-milkshake.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 1</span><span class="tag">3 s cycle</span></div><h3>Milkshake machine</h3><p>Fruit + milk. Takes banana, strawberry and mango.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/machine-juice.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 9</span><span class="tag">4 s cycle</span></div><h3>Juicer</h3><p>Fruit + water. Takes apple and mango. The slower machine, so it reads as grinding.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/machine-icecream.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 26</span><span class="tag">3 s cycle</span></div><h3>Ice cream machine</h3><p>Fruit + cream. Takes banana, strawberry and mango. The end of the game's first chain.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/machine-cream.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 26</span><span class="tag">2 s cycle</span></div><h3>Cream machine</h3><p>Milk in, cream out. The small helper: a short cycle so it keeps up with the line it feeds.</p></div>
+        </div>
+
+        <h3 style="color:var(--navy);font-size:1.6rem;margin:36px 0 14px">The recipes</h3>
+        <div class="recipes">
+          <div class="recipe"><img src="img/items/banana.webp" alt="Banana"><span class="op">+</span><img src="img/items/milk.webp" alt="Milk"><span class="op">=</span><img src="img/items/banana-milkshake.webp" alt="Banana milkshake"><span class="label">Banana milkshake</span></div>
+          <div class="recipe"><img src="img/items/strawberry.webp" alt="Strawberry"><span class="x2">x2</span><span class="op">+</span><img src="img/items/milk.webp" alt="Milk"><span class="op">=</span><img src="img/items/strawberry-milkshake.webp" alt="Strawberry milkshake"><span class="label">Strawberry milkshake</span></div>
+          <div class="recipe"><img src="img/items/mango.webp" alt="Mango"><span class="op">+</span><img src="img/items/milk.webp" alt="Milk"><span class="op">=</span><img src="img/items/mango-milkshake.webp" alt="Mango milkshake"><span class="label">Mango milkshake</span></div>
+          <div class="recipe"><img src="img/items/apple.webp" alt="Apple"><span class="op">+</span><img src="img/items/water.webp" alt="Water"><span class="op">=</span><img src="img/items/apple-juice.webp" alt="Apple juice"><span class="label">Apple juice</span></div>
+          <div class="recipe"><img src="img/items/mango.webp" alt="Mango"><span class="op">+</span><img src="img/items/water.webp" alt="Water"><span class="op">=</span><img src="img/items/mango-juice.webp" alt="Mango juice"><span class="label">Mango juice</span></div>
+          <div class="recipe"><img src="img/items/milk.webp" alt="Milk"><span class="op">=</span><img src="img/items/cream.webp" alt="Cream"><span class="label">Cream (in-between product)</span></div>
+          <div class="recipe"><img src="img/items/banana.webp" alt="Banana"><span class="op">+</span><img src="img/items/cream.webp" alt="Cream"><span class="op">=</span><img src="img/items/banana-icecream.webp" alt="Banana ice cream"><span class="label">Banana ice cream</span></div>
+          <div class="recipe"><img src="img/items/strawberry.webp" alt="Strawberry"><span class="x2">x2</span><span class="op">+</span><img src="img/items/cream.webp" alt="Cream"><span class="op">=</span><img src="img/items/strawberry-icecream.webp" alt="Strawberry ice cream"><span class="label">Strawberry ice cream</span></div>
+          <div class="recipe"><img src="img/items/mango.webp" alt="Mango"><span class="op">+</span><img src="img/items/cream.webp" alt="Cream"><span class="op">=</span><img src="img/items/mango-icecream.webp" alt="Mango ice cream"><span class="label">Mango ice cream</span></div>
+        </div>
+        <div class="note"><strong>The oldest finished recipe goes first.</strong> A machine makes the first recipe it has every ingredient for, in the order they arrived. A lone strawberry waiting for its partner never holds up the banana behind it.</div>
+        <div class="note"><strong>Delivery.</strong> Products fall into a wide bin under the line. A sorter under the bin sends what the order still needs along its pipe, where it counts, and throws everything else out of its spout, so the player sees every miss happen.</div>
+      </section>
+
+      <!-- 6 -->
+      <section id="tools">
+        <h2><span class="num">6</span>Kitchen tools</h2>
+        <p class="intro">The player's tools are kitchen objects, each chosen so its shape says what it does. A level hands out a stock of them; a tool can be placed, moved, turned and taken back at any time.</p>
+        <div class="grid three">
+          <div class="card item"><div class="pic"><img src="img/renders/peel.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 1</span><span class="tag">Steers</span></div><h3>Pizza peel</h3><p>The ramp. Food lands on it and slides off along its slope. Nine angles, from flat to steep, both ways. Laid flat, it holds what falls on it.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/chefs-hat.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 5</span><span class="tag">Throws</span></div><h3>Chef's hat</h3><p>The trampoline. It always launches food along the way it faces, whatever angle the food came from. The tool that throws things up and over.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/macaroni.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 16</span><span class="tag">Turns</span></div><h3>Macaroni</h3><p>A pasta elbow, a real tube. Food falls into one end, rolls round the bend and comes out of the other: a 90° turn. Faster after going down the bend, slower after going up. The only tool that turns a full circle.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/kettle.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 23</span><span class="tag">Lifts</span></div><h3>Kettle</h3><p>The first tool that lifts. Its spout blows a jet of rising steam: food crossing it gets a nudge, food riding along it is thrown. The longer food stays in the steam, the harder it is pushed.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/butter.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 28</span><span class="tag">Speeds up</span></div><h3>Butter</h3><p>Slippery. Anything that slides over it gets the same boost of speed, once per touch, along the way it is already going. Sends food across the sky.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/sponge.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 33</span><span class="tag">Slows</span></div><h3>Sponge</h3><p>The butter's opposite. It soaks up a landing, so food never bounces off it, and on it speed is gained slowly and lost fast. The tool for a short, soft throw.</p></div>
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section id="sky">
+        <h2><span class="num">7</span>The sky</h2>
+        <p class="intro">The level's own terrain. There is no decoration in Sky Kitchen: everything in the sky does something to the food. The player cannot pick terrain up, so it is the puzzle the tools are built around. Levels come by day and by night, where the moon, the stars and the machines' lamps are the only light.</p>
+        <div class="grid four">
+          <div class="card item"><div class="pic"><img src="img/renders/asteroid-round.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 2</span><span class="tag">Fixed</span></div><h3>Asteroids</h3><p>Flat ones are ledges: food lands and slides off. Round ones send it glancing away. Slippery on purpose, so nothing piles up on them.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/asteroid-flat.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 13</span><span class="tag">Turns</span></div><h3>Turning asteroid</h3><p>A tilted slab that turns like a record. Half of each turn it sheds food one way and half the other, so one stream comes off left, right, left, right.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/asteroid-curve.webp" alt=""></div><div class="tags"><span class="tag">Fixed</span></div><h3>Curved asteroid</h3><p>A long, bent ridge of rock that bends a stream along its curve.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/cloud.webp" alt=""></div><div class="tags"><span class="tag">Brake</span></div><h3>Cloud</h3><p>Soft but solid: it takes nine tenths of the speed out of whatever hits it. A cloud over a machine slows its deliveries too.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/solar-wing.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 7</span><span class="tag">Floats</span></div><h3>Satellite parts</h3><p>Eight parts of a wrecked satellite, floating free. Every hit pushes and turns them, so a layout built around one slowly drifts, and moving air carries them away.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/nest.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 14</span><span class="tag">Steals</span></div><h3>Eagle's nest</h3><p>A hole in the line you can see. Food that lands in the bowl is snatched a second later by an eagle swooping in from off-screen. The hammer can smash it.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/moon.webp" alt=""></div><div class="tags"><span class="tag">Night</span><span class="tag">Fixed</span></div><h3>Moon</h3><p>Lights a night level, and is an obstacle too. Food passes through its bite; turned horns-up it becomes a cup.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/star.webp" alt=""></div><div class="tags"><span class="tag">Night</span><span class="tag">Spins</span></div><h3>Star</h3><p>Pinned like a wheel on its axle. A hit spins it, and while it turns its points bat the next fruit off in a direction that depends on when it arrives.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/tornado.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 18</span><span class="tag">Gathers</span></div><h3>Tornado</h3><p>Catches whatever falls into its funnel, spins it round and drops it straight down out of its tip, one at a time, from the same point every time. It turns a wide stream into one.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/wind.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 21</span><span class="tag">Air</span></div><h3>Wind</h3><p>Air, not an obstacle. Everything inside the band is carried along its arrow at the same speed, whatever its weight. Tools can be placed inside it.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/updraft.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 22</span><span class="tag">Air</span></div><h3>Updraft</h3><p>A wind that blows up. Food rises and hovers at its top like a ball on a hair dryer, which is exactly where a peel goes.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/spacecraft.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 27</span><span class="tag">Hovers</span></div><h3>Spacecraft</h3><p>A little craft hovering in place with a gentle bob, a solid obstacle with a hum of its own.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/kite.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 31</span><span class="tag">Swings</span></div><h3>Kite</h3><p>Flies a figure-eight on its string on a fixed beat, and food bounces off it: a ramp that keeps changing its angle and height. Because the beat is fixed, a build can be timed to it.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/rainbow.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 36</span><span class="tag">Carries</span></div><h3>Rainbow</h3><p>A one-way slide. Wherever food lands on the band, it slides over and leaves at the far foot, always at the same place, slowed by the cloud there.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/storm-cloud.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 38</span><span class="tag">Strikes</span></div><h3>Storm cloud</h3><p>Rain falls from it, and lightning strikes some of the food that comes into the rain, freezing it for a moment and knocking it straight down. Only a strike makes a sound.</p></div>
+          <div class="card item"><div class="pic"><img src="img/renders/fog.webp" alt=""></div><div class="tags"><span class="tag yellow">Level 41</span><span class="tag">Hides</span></div><h3>Fog</h3><p>Hides part of the level until it clears. It blocks nothing, and tools can be built inside it, but what it hides has to be worked out from what comes out.</p></div>
+        </div>
+      </section>
+
+      <!-- 8 -->
+      <section id="powerups">
+        <h2><span class="num">8</span>Power-ups &amp; boosters</h2>
+        <p class="intro">Power-ups are used during a level; boosters are picked before it starts. Each one arrives with three free uses on the level that introduces it, and the chef explains it there. More can be bought with coins.</p>
+        <div class="grid four">
+          <div class="card item"><div class="pic flat"><img src="img/icons/icon-powerup-analyze.webp" alt=""></div><div class="tags"><span class="tag green">Free</span><span class="tag yellow">Level 1</span></div><h3>Analyze</h3><p>Slows the whole game, music included, to half speed for 5 seconds, so the player can follow food that falls too fast to see. Then it rests for 10 seconds. Always free.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/icons/reward-move.webp" alt=""></div><div class="tags"><span class="tag">Power-up</span><span class="tag yellow">Level 6</span></div><h3>Move</h3><p>Opens a 15-second window in which every machine can be dragged to a new place. Machines move freely during setup; after that, this is the way.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/icons/reward-hammer.webp" alt=""></div><div class="tags"><span class="tag">Power-up</span><span class="tag yellow">Level 8</span></div><h3>Hammer</h3><p>Smashes an obstacle out of the sky: an asteroid in the way, or an eagle's nest stealing the food.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/icons/icon-powerup-time10.webp" alt=""></div><div class="tags"><span class="tag">Power-up</span><span class="tag yellow">Level 10</span></div><h3>+10 seconds</h3><p>Adds ten seconds to the clock, for the order that is almost done.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/icons/extra-tool.webp" alt=""></div><div class="tags"><span class="tag orange">Booster</span><span class="tag yellow">Level 11</span></div><h3>Extra tool</h3><p>Starts the level with one more tool in stock.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/icons/icon-powerup-time20.webp" alt=""></div><div class="tags"><span class="tag orange">Booster</span><span class="tag yellow">Level 13</span></div><h3>+20 seconds</h3><p>Starts the level with twenty more seconds on the clock.</p></div>
+          <div class="card item"><div class="pic flat"><img src="img/icons/faster-machine.webp" alt=""></div><div class="tags"><span class="tag orange">Booster</span><span class="tag yellow">Level 15</span></div><h3>Faster machine</h3><p>The level's machines work faster, so the line keeps up with a heavy stream.</p></div>
+        </div>
+      </section>
+
+      <!-- 9 -->
+      <section id="levels">
+        <h2><span class="num">9</span>Levels</h2>
+        <p class="intro">50 hand-built levels in the Sky world. The first ten alternate tutorial and free levels, and the difficulty starts after level 15. After that the game moves in blocks of five: <strong>one new thing, then practice</strong>. A tutorial teaches the <em>control</em>, never the answer: the chef never shows where a tool goes or at what angle.</p>
+        <h3 style="color:var(--navy);font-size:1.6rem;margin:0 0 6px">The first 50 levels</h3>
+        <p style="margin:0 0 18px">What each level brings in. Blue squares bring something new; pale ones practise what came before.</p>
+        <div class="levelmap" id="level-map">
+          <div class="lv tool" title="Level 1: Pizza peel"><span class="n">1</span><div class="pics"><img src="img/renders/peel.webp" alt="" loading="lazy"></div><div class="what">Pizza peel</div></div>
+          <div class="lv sky" title="Level 2: Asteroid"><span class="n">2</span><div class="pics"><img src="img/renders/asteroid-round.webp" alt="" loading="lazy"></div><div class="what">Asteroid</div></div>
+          <div class="lv food" title="Level 3: Strawberry &middot; 2x speed"><span class="n">3</span><div class="pics"><img src="img/items/strawberry.webp" alt="" loading="lazy"><img src="img/icons/icon-speed-2x.webp" alt="" loading="lazy"></div><div class="what">Strawberry &middot; 2x speed</div></div>
+          <div class="lv sky" title="Level 4: Bonus &middot; First night"><span class="n">4</span><div class="pics"><img src="img/icons/icon-bonus.webp" alt="" loading="lazy"><img src="img/renders/moon.webp" alt="" loading="lazy"></div><div class="what">Bonus &middot; First night</div></div>
+          <div class="lv tool" title="Level 5: Chef's hat &middot; Stop time"><span class="n">5</span><div class="pics"><img src="img/renders/chefs-hat.webp" alt="" loading="lazy"><img src="img/icons/clock-face-stop.webp" alt="" loading="lazy"></div><div class="what">Chef's hat &middot; Stop time</div></div>
+          <div class="lv power" title="Level 6: Move &middot; Cloud"><span class="n">6</span><div class="pics"><img src="img/icons/reward-move.webp" alt="" loading="lazy"><img src="img/renders/cloud.webp" alt="" loading="lazy"></div><div class="what">Move &middot; Cloud</div></div>
+          <div class="lv sky" title="Level 7: Wrong food &middot; Satellite"><span class="n">7</span><div class="pics"><img src="img/items/banana-milkshake.webp" alt="" loading="lazy"><img src="img/renders/solar-wing.webp" alt="" loading="lazy"></div><div class="what">Wrong food &middot; Satellite</div></div>
+          <div class="lv power" title="Level 8: Apple &middot; Hammer"><span class="n">8</span><div class="pics"><img src="img/items/apple.webp" alt="" loading="lazy"><img src="img/icons/reward-hammer.webp" alt="" loading="lazy"></div><div class="what">Apple &middot; Hammer</div></div>
+          <div class="lv food" title="Level 9: Juicer &middot; Water"><span class="n">9</span><div class="pics"><img src="img/items/machine-juice.webp" alt="" loading="lazy"><img src="img/items/water.webp" alt="" loading="lazy"></div><div class="what">Juicer &middot; Water</div></div>
+          <div class="lv power" title="Level 10: +10 seconds"><span class="n">10</span><div class="pics"><img src="img/icons/icon-powerup-time10.webp" alt="" loading="lazy"></div><div class="what">+10 seconds</div></div>
+          <div class="lv power" title="Level 11: Extra tool &middot; Analyze"><span class="n">11</span><div class="pics"><img src="img/icons/extra-tool.webp" alt="" loading="lazy"><img src="img/icons/icon-powerup-analyze.webp" alt="" loading="lazy"></div><div class="what">Extra tool &middot; Analyze</div></div>
+          <div class="lv food" title="Level 12: Mango"><span class="n">12</span><div class="pics"><img src="img/items/mango.webp" alt="" loading="lazy"></div><div class="what">Mango</div></div>
+          <div class="lv sky" title="Level 13: Turning asteroid &middot; +20 s"><span class="n">13</span><div class="pics"><img src="img/renders/asteroid-flat.webp" alt="" loading="lazy"><img src="img/icons/icon-powerup-time20.webp" alt="" loading="lazy"></div><div class="what">Turning asteroid &middot; +20 s</div></div>
+          <div class="lv sky" title="Level 14: Eagle's nest"><span class="n">14</span><div class="pics"><img src="img/renders/nest.webp" alt="" loading="lazy"></div><div class="what">Eagle's nest</div></div>
+          <div class="lv power" title="Level 15: Faster machine &middot; Two floors"><span class="n">15</span><div class="pics"><img src="img/icons/faster-machine.webp" alt="" loading="lazy"></div><div class="what">Faster machine &middot; Two floors</div></div>
+          <div class="lv tool" title="Level 16: Macaroni"><span class="n">16</span><div class="pics"><img src="img/renders/macaroni.webp" alt="" loading="lazy"></div><div class="what">Macaroni</div></div>
+          <div class="lv practice" title="Level 17: practice"><span class="n">17</span><div class="pics">Practice</div></div>
+          <div class="lv sky" title="Level 18: Tornado"><span class="n">18</span><div class="pics"><img src="img/renders/tornado.webp" alt="" loading="lazy"></div><div class="what">Tornado</div></div>
+          <div class="lv practice" title="Level 19: practice"><span class="n">19</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 20: practice"><span class="n">20</span><div class="pics">Practice</div></div>
+          <div class="lv sky" title="Level 21: Wind"><span class="n">21</span><div class="pics"><img src="img/renders/wind.webp" alt="" loading="lazy"></div><div class="what">Wind</div></div>
+          <div class="lv sky" title="Level 22: Updraft"><span class="n">22</span><div class="pics"><img src="img/renders/updraft.webp" alt="" loading="lazy"></div><div class="what">Updraft</div></div>
+          <div class="lv tool" title="Level 23: Kettle"><span class="n">23</span><div class="pics"><img src="img/renders/kettle.webp" alt="" loading="lazy"></div><div class="what">Kettle</div></div>
+          <div class="lv practice" title="Level 24: practice"><span class="n">24</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 25: practice"><span class="n">25</span><div class="pics">Practice</div></div>
+          <div class="lv food" title="Level 26: Ice cream &middot; Cream"><span class="n">26</span><div class="pics"><img src="img/items/machine-icecream.webp" alt="" loading="lazy"><img src="img/items/cream.webp" alt="" loading="lazy"></div><div class="what">Ice cream &middot; Cream</div></div>
+          <div class="lv sky" title="Level 27: Spacecraft"><span class="n">27</span><div class="pics"><img src="img/renders/spacecraft.webp" alt="" loading="lazy"></div><div class="what">Spacecraft</div></div>
+          <div class="lv tool" title="Level 28: Butter"><span class="n">28</span><div class="pics"><img src="img/renders/butter.webp" alt="" loading="lazy"></div><div class="what">Butter</div></div>
+          <div class="lv practice" title="Level 29: practice"><span class="n">29</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 30: practice"><span class="n">30</span><div class="pics">Practice</div></div>
+          <div class="lv sky" title="Level 31: Kite"><span class="n">31</span><div class="pics"><img src="img/renders/kite.webp" alt="" loading="lazy"></div><div class="what">Kite</div></div>
+          <div class="lv practice" title="Level 32: practice"><span class="n">32</span><div class="pics">Practice</div></div>
+          <div class="lv tool" title="Level 33: Sponge"><span class="n">33</span><div class="pics"><img src="img/renders/sponge.webp" alt="" loading="lazy"></div><div class="what">Sponge</div></div>
+          <div class="lv practice" title="Level 34: practice"><span class="n">34</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 35: practice"><span class="n">35</span><div class="pics">Practice</div></div>
+          <div class="lv sky" title="Level 36: Rainbow"><span class="n">36</span><div class="pics"><img src="img/renders/rainbow.webp" alt="" loading="lazy"></div><div class="what">Rainbow</div></div>
+          <div class="lv practice" title="Level 37: practice"><span class="n">37</span><div class="pics">Practice</div></div>
+          <div class="lv sky" title="Level 38: Storm cloud"><span class="n">38</span><div class="pics"><img src="img/renders/storm-cloud.webp" alt="" loading="lazy"></div><div class="what">Storm cloud</div></div>
+          <div class="lv practice" title="Level 39: practice"><span class="n">39</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 40: practice"><span class="n">40</span><div class="pics">Practice</div></div>
+          <div class="lv sky" title="Level 41: Fog"><span class="n">41</span><div class="pics"><img src="img/renders/fog.webp" alt="" loading="lazy"></div><div class="what">Fog</div></div>
+          <div class="lv practice" title="Level 42: practice"><span class="n">42</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 43: practice"><span class="n">43</span><div class="pics">Practice</div></div>
+          <div class="lv sky" title="Level 44: Curved asteroid"><span class="n">44</span><div class="pics"><img src="img/renders/asteroid-curve.webp" alt="" loading="lazy"></div><div class="what">Curved asteroid</div></div>
+          <div class="lv practice" title="Level 45: practice"><span class="n">45</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 46: practice"><span class="n">46</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 47: practice"><span class="n">47</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 48: practice"><span class="n">48</span><div class="pics">Practice</div></div>
+          <div class="lv practice" title="Level 49: practice"><span class="n">49</span><div class="pics">Practice</div></div>
+          <div class="lv final" title="Level 50: Finale: three orders"><span class="n">50</span><div class="pics"><img src="img/renders/chef-win-face-cutout.webp" alt="" loading="lazy"></div><div class="what">Finale: three orders</div></div>
+        </div>
+        <div class="legend">
+          <span style="--c:var(--orange)">Kitchen tool</span>
+          <span style="--c:var(--navy)">Sky obstacle</span>
+          <span style="--c:var(--green-dark)">Food or machine</span>
+          <span style="--c:#d6457a">Power-up or booster</span>
+          <span style="--c:#f3f8fc">Practice</span>
+        </div>
+        <p style="text-align:center;margin-top:18px"><strong>Levels 51–100:</strong> the Space world, coming soon.</p>
+        <div class="grid two" style="margin-top:24px">
+          <div class="card"><h3 style="color:var(--navy)">Variety without new rules</h3><p>Night levels, and two-floor levels where the line runs a whole screen down, give old pieces new problems. A level is one screen wide and the camera scrolls up and down only, so the line can never be lost sideways.</p></div>
+          <div class="card"><h3 style="color:var(--navy)">The journey and the recipe book</h3><p>The journey shows one card per world. The recipe book collects every drink: one painted page per world, and a recipe not made yet is a dark silhouette until the kitchen first makes it.</p></div>
+        </div>
+      </section>
+
+      <!-- 10 -->
+      <section id="economy">
+        <h2><span class="num">10</span>Economy</h2>
+        <p class="intro">One currency, coins, priced off one base: <strong>150 coins, the worth of one ad</strong>. Nothing is sold for real money. Ads are rewarded only, always the player's choice, in three places.</p>
+        <div class="table-scroll">
+          <table class="plain">
+            <tr><th>Earn</th><th>Coins</th></tr>
+            <tr><td>A level won (once per level)</td><td class="num">+100</td></tr>
+            <tr><td>Daily coins, seven days in a row (a missed day starts again)</td><td class="num">+50 → 350</td></tr>
+            <tr><td>Watch an ad in the market</td><td class="num">+150</td></tr>
+          </table>
+        </div>
+        <div class="table-scroll" style="margin-top:20px">
+          <table class="plain">
+            <tr><th>Spend</th><th>Coins</th></tr>
+            <tr><td>Any power-up or booster</td><td class="num">150</td></tr>
+            <tr><td>One heart</td><td class="num">150 or an ad</td></tr>
+            <tr><td>Continue: +20 seconds when the clock runs out</td><td class="num">300 or an ad</td></tr>
+          </table>
+        </div>
+        <div class="grid two" style="margin-top:24px">
+          <div class="card"><h3 style="color:var(--navy)">Hearts</h3><p>Five hearts, one back every 10 minutes. A heart is spent only when a lost level is given up, never just because the clock ran out, so the continue offer comes first.</p></div>
+          <div class="card"><h3 style="color:var(--navy)">Owned, not rented</h3><p>Power-ups and boosters are counts the player owns and keeps between levels, and as many can be used in a level as are owned.</p></div>
+        </div>
+      </section>
+
+      <!-- 11 -->
+      <section id="chef">
+        <h2><span class="num">11</span>The chef</h2>
+        <div class="grid two" style="align-items:center">
+          <div>
+            <p class="intro">The chef is the game's voice. Every line the game says comes out of his speech bubble: he introduces each new food the first time it falls, teaches each control once, and names every power-up on its first level.</p>
+            <p>During a level he lives in a badge on the top bar, reacting as it happens: delighted at a delivery, worried as the clock runs low, cheering a bonus and celebrating the win with a "Woo-hoo!". On the pages around a level he appears in person, talking with his mouth moving to his babble.</p>
+          </div>
+          <img src="img/renders/chef-wave-cutout.webp" alt="The chef waving" style="width:min(320px,80%);margin:0 auto" class="bob">
+        </div>
+      </section>
+
+      <!-- 12 -->
+      <section id="tech">
+        <h2><span class="num">12</span>Under the hood</h2>
+        <div class="grid two">
+          <div class="card"><h3 style="color:var(--navy)">3D objects, 2D play</h3><p>Everything is 3D and lit, but motion happens on one flat plane, run by 3D PhysX. Tested on a mid-range Android phone: 300 objects in motion at a steady 60 fps.</p></div>
+          <div class="card"><h3 style="color:var(--navy)">One material</h3><p>Every model is coloured from one small palette texture and shares one material, so the whole kitchen draws in very few batches.</p></div>
+          <div class="card"><h3 style="color:var(--navy)">Every sound in one key</h3><p>Every in-level sound is tuned to the level music's key and levelled for a phone speaker. Each new object gets a sound of its own, of what it is made of: the eagle's cry, the kettle's hiss, the macaroni's slurp.</p></div>
+          <div class="card"><h3 style="color:var(--navy)">Built to be tuned</h3><p>Anonymous level statistics show where players stop and why they fail, so levels that are too hard get easier. The game plays fully offline.</p></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="links">
+      <a href="./">Home</a>
+      <a href="art.html">Art</a>
+      <a href="support.html">Support</a>
+      <a href="privacy/">Privacy Policy</a>
+    </div>
+    <div class="copy">&copy; <span data-year>2026</span> AUgames &middot; <a href="mailto:augames.info@gmail.com">augames.info@gmail.com</a></div>
+  </div>
+</footer>
+</body>
+</html>

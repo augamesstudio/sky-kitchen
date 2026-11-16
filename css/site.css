@@ -1,0 +1,344 @@
+/* Sky Kitchen website. The look follows the game's store art: a blue sky with rays, white
+   clouds, dark navy outlines, Lilita One for every heading, chunky cards that sit on a hard shadow
+   the way the game's buttons do. */
+
+@font-face {
+  font-family: "Lilita One";
+  src: url("../fonts/LilitaOne-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --navy: #1d2b45;
+  --navy-soft: #3a4a68;
+  --sky-deep: #1f7fd6;
+  --sky: #4aa6ec;
+  --sky-light: #9fd6f7;
+  --sky-pale: #d9f0fd;
+  --cream: #fff9ee;
+  --yellow: #ffd23f;
+  --orange: #ff8a3d;
+  --green: #4cc34a;
+  --green-dark: #2f8f2e;
+  --pink: #ff6f9c;
+  --text: #22304b;
+  --muted: #5b6886;
+  --radius: 22px;
+  --shadow: 0 6px 0 var(--navy);
+  --max: 1120px;
+  --render-sky: #8fc4e3;   /* the level camera's sky, which every render is shot on */
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--sky-pale);
+  font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--sky-deep); }
+
+h1, h2, h3, .display {
+  font-family: "Lilita One", system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  margin: 0 0 0.4em;
+}
+.outlined {
+  color: #fff;
+  -webkit-text-stroke: 6px var(--navy);
+  paint-order: stroke fill;
+  text-shadow: 0 5px 0 var(--navy);
+}
+.outlined.yellow { color: var(--yellow); }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+
+/* ---------- top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--navy);
+  box-shadow: 0 4px 0 rgba(29, 43, 69, 0.25);
+}
+.topbar .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; }
+.brand img { width: 40px; height: 40px; border-radius: 10px; }
+.brand span { font-family: "Lilita One", sans-serif; font-size: 1.4rem; }
+.nav { margin-left: auto; display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a {
+  color: #fff; text-decoration: none; font-weight: 700; font-size: 0.95rem;
+  padding: 8px 14px; border-radius: 999px;
+}
+.nav a:hover { background: rgba(255, 255, 255, 0.12); }
+.nav a[aria-current="page"] { background: var(--yellow); color: var(--navy); }
+.menu-toggle { display: none; }
+
+@media (max-width: 760px) {
+  .menu-toggle {
+    display: block; margin-left: auto; background: none; border: 0; color: #fff;
+    font: 700 1rem system-ui, sans-serif; padding: 8px 12px; cursor: pointer;
+  }
+  .nav {
+    display: none; position: absolute; top: 64px; left: 0; right: 0;
+    flex-direction: column; background: var(--navy); padding: 8px 16px 16px;
+  }
+  .nav.open { display: flex; }
+}
+
+/* ---------- sky sections ---------- */
+.sky {
+  position: relative; overflow: hidden; color: #fff;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 60%, rgba(255,255,255,0.09) 0deg 7deg, transparent 7deg 18deg),
+    radial-gradient(circle at 50% 60%, var(--sky-light), var(--sky) 45%, var(--sky-deep));
+}
+.clouds {
+  position: absolute; left: 0; right: 0; bottom: -2px; height: 90px;
+  background: url("../img/clouds.svg") repeat-x bottom / auto 90px;
+  pointer-events: none;
+}
+.floaty { position: absolute; width: 120px; opacity: 0.9; animation: drift 28s linear infinite; }
+@keyframes drift { from { transform: translateX(-160px); } to { transform: translateX(calc(100vw + 160px)); } }
+@media (prefers-reduced-motion: reduce) { .floaty, .bob { animation: none !important; } }
+
+.hero { padding: 48px 0 120px; }
+.sky .wrap { position: relative; z-index: 1; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; }
+.hero-logo { width: min(420px, 90%); margin: 0 0 12px; filter: drop-shadow(0 8px 0 rgba(29,43,69,0.25)); }
+.hero p.lead { font-size: 1.3rem; font-weight: 600; max-width: 30em; text-shadow: 0 2px 0 rgba(29,43,69,0.35); }
+.hero .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 22px; }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; text-align: center; }
+  .hero-logo { margin: 0 auto 12px; }
+  .hero p.lead { margin: 0 auto; }
+  .hero .actions { justify-content: center; }
+}
+
+.phone {
+  width: min(300px, 80vw); margin: 0 auto; padding: 12px;
+  background: var(--navy); border-radius: 38px; box-shadow: 0 10px 0 rgba(29,43,69,0.35);
+}
+.phone video, .phone img { width: 100%; border-radius: 28px; aspect-ratio: 9 / 16; object-fit: cover; background: var(--sky); }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: "Lilita One", sans-serif; font-size: 1.25rem; text-decoration: none;
+  color: #fff; padding: 12px 24px; border-radius: 16px;
+  border: 4px solid var(--navy); box-shadow: 0 6px 0 var(--navy);
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--navy); }
+.btn.green { background: linear-gradient(var(--green), var(--green-dark)); }
+.btn.orange { background: linear-gradient(#ffa25c, var(--orange)); }
+.btn.white { background: #fff; color: var(--navy); }
+.btn svg { width: 26px; height: 26px; }
+.btn small { display: block; font: 700 0.65rem system-ui, sans-serif; letter-spacing: 0.08em; opacity: 0.9; }
+
+/* ---------- content sections ---------- */
+section.block { padding: 64px 0; }
+section.block.alt { background: #fff; }
+.section-title { text-align: center; font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 8px; }
+.section-sub { text-align: center; color: var(--muted); max-width: 40em; margin: 0 auto 36px; }
+
+.card {
+  background: var(--cream); border: 4px solid var(--navy); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px;
+}
+.grid { display: grid; gap: 24px; }
+.grid.two { grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); }
+.grid.three { grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+.grid.four { grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); }
+.grid.six { grid-template-columns: repeat(auto-fit, minmax(min(130px, 100%), 1fr)); gap: 16px; }
+
+/* An item: picture on a sky tile, name, tags, a few lines. */
+.item { display: flex; flex-direction: column; }
+.item .pic {
+  border-radius: 16px; border: 3px solid var(--navy); overflow: hidden;
+  background: var(--render-sky);
+  aspect-ratio: 1; margin-bottom: 14px;
+}
+.item .pic img { width: 100%; height: 100%; object-fit: contain; }
+.item .pic.flat img { padding: 14%; }
+.item h3 { font-size: 1.5rem; margin-bottom: 6px; color: var(--navy); }
+.item p { margin: 0 0 0.6em; font-size: 0.97rem; }
+.item p:last-child { margin-bottom: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.tag {
+  font: 800 0.72rem system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 999px; background: var(--navy); color: #fff;
+}
+.tag.yellow { background: var(--yellow); color: var(--navy); }
+.tag.green { background: var(--green); }
+.tag.orange { background: var(--orange); }
+.tag.pink { background: var(--pink); }
+
+/* Small food tiles. */
+.food { text-align: center; }
+.food .pic {
+  background: #fff; border: 3px solid var(--navy); border-radius: 18px; aspect-ratio: 1;
+  display: grid; place-items: center; box-shadow: 0 4px 0 var(--navy); margin-bottom: 8px;
+}
+.food .pic img { width: 78%; }
+.food .pic.render { background: var(--render-sky); overflow: hidden; }
+.food .pic.render img { width: 100%; }
+.food b { font-family: "Lilita One", sans-serif; font-weight: 400; font-size: 1.1rem; color: var(--navy); display: block; }
+.food span { font-size: 0.85rem; color: var(--muted); }
+
+/* Steps of the loop. */
+.steps { counter-reset: step; }
+.step { position: relative; padding-top: 34px; text-align: center; }
+.step::before {
+  counter-increment: step; content: counter(step);
+  position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+  width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--yellow); border: 4px solid var(--navy);
+  font: 1.6rem "Lilita One", sans-serif; color: var(--navy);
+}
+.step img { width: 96px; height: 96px; object-fit: contain; margin: 0 auto 8px; }
+.step h3 { color: var(--navy); font-size: 1.35rem; }
+
+/* Recipes: icons in a row. */
+.recipe {
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  background: #fff; border: 3px solid var(--navy); border-radius: 18px; padding: 10px 14px;
+  box-shadow: 0 4px 0 var(--navy);
+}
+.recipe img { width: 64px; height: 64px; }
+.recipe .op { font: 1.8rem "Lilita One", sans-serif; color: var(--navy); }
+.recipe .x2 { font: 1.1rem "Lilita One", sans-serif; color: var(--pink); margin-left: -10px; align-self: flex-end; }
+.recipe .label { flex-basis: 100%; text-align: center; font-weight: 800; color: var(--navy); font-size: 0.95rem; }
+.recipes { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+
+/* Screenshots strip. */
+.strip { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 8px 4px 22px; }
+.strip img {
+  flex: 0 0 auto; width: 220px; border-radius: 20px; border: 4px solid var(--navy);
+  box-shadow: var(--shadow); scroll-snap-align: center;
+}
+
+/* Fact chips. */
+.facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.fact {
+  background: #fff; border: 4px solid var(--navy); border-radius: 18px; box-shadow: var(--shadow);
+  padding: 12px 20px; text-align: center; min-width: 150px;
+}
+.fact b { display: block; font: 1.9rem "Lilita One", sans-serif; color: var(--sky-deep); line-height: 1.1; }
+.fact span { font-weight: 700; font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* Tables. */
+table.plain { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border: 4px solid var(--navy); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+table.plain th, table.plain td { padding: 12px 16px; text-align: left; border-bottom: 2px solid #e3ecf6; vertical-align: top; }
+table.plain tr:last-child td { border-bottom: 0; }
+table.plain th { background: var(--navy); color: #fff; font: 1.05rem "Lilita One", sans-serif; font-weight: 400; }
+table.plain td.num { font-family: "Lilita One", sans-serif; color: var(--sky-deep); font-size: 1.15rem; white-space: nowrap; }
+.table-scroll { overflow-x: auto; padding-bottom: 8px; }
+
+/* Design doc layout: the contents as a row of pills over the full-width text, so the level map
+   has room for ten squares across. */
+.doc { display: block; }
+.toc { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 48px; }
+.toc b { display: none; }
+.toc a {
+  padding: 6px 14px; border-radius: 999px; color: var(--navy); text-decoration: none; font-weight: 700;
+  font-size: 0.93rem; background: #fff; border: 2px solid var(--navy);
+}
+.toc a:hover { background: var(--yellow); }
+.doc section { scroll-margin-top: 84px; margin-bottom: 64px; }
+.doc h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); color: var(--navy); }
+.doc h2 .num { color: var(--sky-deep); margin-right: 8px; }
+.doc .intro { font-size: 1.08rem; max-width: 46em; margin-bottom: 26px; }
+
+/* The level map: levels 1-50 as a 10 x 5 board of squares, each saying what it unlocks.
+   A level that brings something new is the level camera's sky blue; a practice level is pale. */
+.levelmap { display: grid; grid-template-columns: repeat(10, 1fr); gap: 10px; }
+.lv {
+  position: relative; aspect-ratio: 1; border: 3px solid var(--navy); border-radius: 14px; overflow: hidden;
+  background: var(--render-sky); box-shadow: 0 4px 0 var(--navy);
+  display: flex; flex-direction: column;
+}
+.lv .n {
+  position: absolute; top: 4px; left: 5px; z-index: 1;
+  font: 1.15rem "Lilita One", sans-serif; color: #fff;
+  -webkit-text-stroke: 4px var(--navy); paint-order: stroke fill;
+}
+.lv .pics { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 14px 4px 0; }
+.lv .pics img { height: 100%; max-width: 100%; object-fit: contain; min-width: 0; }
+.lv .pics img + img { margin-left: -12%; }
+.lv .what {
+  background: var(--navy); color: #fff; text-align: center; font-weight: 800; font-size: 0.66rem;
+  line-height: 1.15; padding: 4px 2px 5px; letter-spacing: 0.01em;
+}
+.lv.tool .what { background: var(--orange); }
+.lv.food .what { background: var(--green-dark); }
+.lv.power .what { background: #d6457a; }
+.lv.practice { background: #f3f8fc; box-shadow: 0 4px 0 #b9c7d9; border-color: #b9c7d9; }
+.lv.practice .n { -webkit-text-stroke: 4px #b9c7d9; }
+.lv.practice .pics { font: 0.75rem system-ui, sans-serif; font-weight: 700; color: #9aa9bf; align-items: flex-end; padding-bottom: 10px; }
+.lv.final { background: linear-gradient(var(--yellow), #ffb238); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: center; margin-top: 22px; font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+.legend span::before { content: ""; display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 6px; vertical-align: -2px; background: var(--c); border: 2px solid var(--navy); }
+@media (max-width: 760px) {
+  .levelmap { grid-template-columns: repeat(5, 1fr); }
+  .lv .what { font-size: 0.72rem; }
+}
+
+.pillars { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
+.pillar h3 { color: var(--navy); font-size: 1.35rem; }
+.pillar .icon { font: 2.2rem "Lilita One", sans-serif; color: var(--sky-deep); line-height: 1; margin-bottom: 6px; }
+
+.note {
+  background: #fff; border-left: 8px solid var(--yellow); border-radius: 12px;
+  padding: 14px 18px; margin: 20px 0; box-shadow: 0 3px 0 rgba(29,43,69,0.15);
+}
+
+/* Gallery. */
+.gallery { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(170px, 100%), 1fr)); }
+.gallery figure { margin: 0; }
+.gallery figure img {
+  width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 16px; border: 3px solid var(--navy);
+  background: var(--render-sky);
+}
+.gallery figure img.flat { padding: 12%; }
+.gallery figcaption { text-align: center; font-weight: 800; color: var(--navy); font-size: 0.9rem; margin-top: 6px; }
+.gallery.tall, .gallery.fit { grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); }
+.gallery.tall figure img { aspect-ratio: 3 / 4; object-fit: contain; background: linear-gradient(var(--sky-light), var(--sky)); }
+.gallery.wide { grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); }
+.gallery.wide figure img { aspect-ratio: 5 / 6; object-fit: cover; }
+.gallery.screens { grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr)); }
+.gallery.screens figure img { aspect-ratio: 9 / 16; object-fit: cover; }
+
+.bob { animation: bob 3.2s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-10px); } }
+
+/* Prose pages: privacy, support. */
+.prose { max-width: 46rem; margin: 0 auto; }
+.prose h2 { color: var(--navy); font-size: 1.7rem; margin-top: 1.6em; }
+.prose ul { padding-left: 1.2em; }
+.prose li { margin-bottom: 0.4em; }
+.prose .summary { border-left: 8px solid var(--orange); background: #fff; border-radius: 12px; padding: 14px 18px; }
+.page-head { padding: 44px 0 110px; text-align: center; }
+.page-head h1 { font-size: clamp(2.4rem, 7vw, 4rem); }
+.page-head p { font-weight: 600; font-size: 1.15rem; text-shadow: 0 2px 0 rgba(29,43,69,0.35); margin: 0; }
+
+details.faq {
+  background: #fff; border: 3px solid var(--navy); border-radius: 16px; margin-bottom: 14px;
+  box-shadow: 0 4px 0 var(--navy);
+}
+details.faq summary { cursor: pointer; padding: 14px 18px; font-weight: 800; color: var(--navy); list-style: none; }
+details.faq summary::after { content: "+"; float: right; font: 1.4rem "Lilita One", sans-serif; line-height: 1; }
+details.faq[open] summary::after { content: "–"; }
+details.faq div { padding: 0 18px 14px; }
+
+/* ---------- footer ---------- */
+footer.site {
+  background: var(--navy); color: #c9d4ea; padding: 36px 0; font-size: 0.93rem;
+}
+footer.site .wrap { display: flex; flex-wrap: wrap; gap: 18px 32px; align-items: center; }
+footer.site a { color: #fff; text-decoration: none; font-weight: 700; }
+footer.site a:hover { text-decoration: underline; }
+footer.site .links { display: flex; gap: 20px; flex-wrap: wrap; }
+footer.site .copy { margin-left: auto; }

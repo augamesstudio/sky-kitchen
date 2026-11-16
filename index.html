@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sky Kitchen – Steer the falling fruit, fill every order</title>
+<meta name="description" content="Sky Kitchen is a physics puzzle game for Android. Ingredients rain from the sky: place kitchen tools to steer them into machines and make shakes, juices and ice cream before time runs out.">
+<meta property="og:title" content="Sky Kitchen">
+<meta property="og:description" content="Steer the falling fruit with kitchen tools and fill every order in the sky!">
+<meta property="og:image" content="img/feature.webp">
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="css/site.css">
+<script src="js/site.js" defer></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/icon.webp" alt=""><span>Sky Kitchen</span></a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav">
+      <a href="./" aria-current="page">Home</a>
+      <a href="design.html">Game Design</a>
+      <a href="art.html">Art</a>
+      <a href="support.html">Support</a>
+      <a href="privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="sky hero">
+    <img class="floaty" src="img/cloud.svg" alt="" style="top:40px;animation-duration:34s">
+    <img class="floaty" src="img/cloud.svg" alt="" style="top:220px;width:80px;animation-duration:46s;animation-delay:-20s">
+    <div class="wrap">
+      <div>
+        <img class="hero-logo" src="img/logo-sign.webp" alt="Sky Kitchen">
+        <p class="lead">Ingredients are raining from the sky! Place pizza peels, chef's hats and other kitchen tools in the air, bounce the falling fruit into the right machines, and make shakes, juices and ice cream before time runs out.</p>
+        <div class="actions">
+          <a class="btn green" href="https://play.google.com/store/apps/details?id=com.augames.skykitchen">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M5 3.5v17c0 .8.9 1.3 1.6.9l14-8.5c.7-.4.7-1.4 0-1.8l-14-8.5C5.9 2.2 5 2.7 5 3.5z"/></svg>
+            <span><small>GET IT ON</small>Google Play</span>
+          </a>
+          <a class="btn white" href="design.html">Game Design</a>
+        </div>
+      </div>
+      <div class="phone bob">
+        <video src="media/gameplay.mp4" poster="media/poster.webp" autoplay muted loop playsinline controls preload="metadata"></video>
+      </div>
+    </div>
+    <div class="clouds"></div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2 class="section-title outlined">How to play</h2>
+      <p class="section-sub">One idea, many ways to solve it. Every bounce, slide and roll is real physics.</p>
+      <div class="grid four steps">
+        <div class="card step">
+          <img src="img/items/banana.webp" alt="">
+          <h3>Food falls</h3>
+          <p>Droppers at the top rain ingredients down without stopping: fruit, milk and water.</p>
+        </div>
+        <div class="card step">
+          <img src="img/renders/peel-cutout.webp" alt="">
+          <h3>Place tools</h3>
+          <p>Drag kitchen tools into the sky and turn them. Every fruit that hits one changes course.</p>
+        </div>
+        <div class="card step">
+          <img src="img/items/machine-milkshake.webp" alt="">
+          <h3>Machines cook</h3>
+          <p>Steer each ingredient into the machine that needs it. The fruit you feed in decides the flavour.</p>
+        </div>
+        <div class="card step">
+          <img src="img/items/strawberry-milkshake.webp" alt="">
+          <h3>Fill the order</h3>
+          <p>Deliver every drink on the order before the clock hits zero. Move or take back any tool, any time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap">
+      <h2 class="section-title outlined">Screenshots</h2>
+      <p class="section-sub">Swipe through the kitchen in the sky.</p>
+      <div class="strip">
+        <img src="img/screens/falling-fruit.webp" alt="Ingredients falling from the sky" loading="lazy">
+        <img src="img/screens/storm-gameplay.webp" alt="A level with a storm cloud" loading="lazy">
+        <img src="img/screens/shakes-juice-ice-cream.webp" alt="Shakes, juice and ice cream" loading="lazy">
+        <img src="img/screens/clouds-gameplay.webp" alt="A level with clouds" loading="lazy">
+        <img src="img/screens/kitchen-tools.webp" alt="Six kitchen tools" loading="lazy">
+        <img src="img/screens/sky-surprises.webp" alt="Sky surprises" loading="lazy">
+        <img src="img/screens/recipes.webp" alt="The recipe book" loading="lazy">
+        <img src="img/screens/levels.webp" alt="50 levels" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="facts">
+        <div class="fact"><b>50</b><span>Levels</span></div>
+        <div class="fact"><b>6</b><span>Kitchen tools</span></div>
+        <div class="fact"><b>4</b><span>Machines</span></div>
+        <div class="fact"><b>8</b><span>Recipes</span></div>
+        <div class="fact"><b>15+</b><span>Sky obstacles</span></div>
+        <div class="fact"><b>0</b><span>Wi-Fi needed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt">
+    <div class="wrap">
+      <h2 class="section-title outlined">A sky full of surprises</h2>
+      <p class="section-sub">Tornadoes gather the food, kites swing, rainbows carry it, storm clouds strike it, and an eagle steals whatever lands in its nest.</p>
+      <div class="grid six">
+        <div class="food"><div class="pic render"><img src="img/renders/tornado.webp" alt=""></div><b>Tornado</b></div>
+        <div class="food"><div class="pic render"><img src="img/renders/rainbow.webp" alt=""></div><b>Rainbow</b></div>
+        <div class="food"><div class="pic render"><img src="img/renders/kite.webp" alt=""></div><b>Kite</b></div>
+        <div class="food"><div class="pic render"><img src="img/renders/storm-cloud.webp" alt=""></div><b>Storm cloud</b></div>
+        <div class="food"><div class="pic render"><img src="img/renders/nest.webp" alt=""></div><b>Eagle's nest</b></div>
+        <div class="food"><div class="pic render"><img src="img/renders/spacecraft.webp" alt=""></div><b>Spacecraft</b></div>
+      </div>
+      <p style="text-align:center;margin-top:30px"><a class="btn orange" href="design.html#sky">See them all</a></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap grid two" style="align-items:center">
+      <img src="img/renders/chef-cheer-cutout.webp" alt="The chef" style="width:min(360px,80%);margin:0 auto" class="bob">
+      <div>
+        <h2 class="outlined" style="font-size:clamp(2rem,5vw,3rem)">Meet the chef</h2>
+        <p>He runs the kitchen in the sky. He introduces every new food, cheers when an order is done, worries when the clock runs low, and celebrates every win with you.</p>
+        <p>Collect every recipe in his <strong>recipe book</strong>: a drink you have not made yet is a dark silhouette until the first time your kitchen makes it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sky" style="padding:56px 0 120px;text-align:center">
+    <div class="wrap">
+      <h2 class="outlined" style="font-size:clamp(2rem,6vw,3.4rem)">Can you keep the Sky Kitchen running?</h2>
+      <p style="font-weight:600;font-size:1.15rem;margin:0 0 22px">Free to play on Android. No ads you have to watch.</p>
+      <a class="btn green" href="https://play.google.com/store/apps/details?id=com.augames.skykitchen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M5 3.5v17c0 .8.9 1.3 1.6.9l14-8.5c.7-.4.7-1.4 0-1.8l-14-8.5C5.9 2.2 5 2.7 5 3.5z"/></svg>
+        <span><small>GET IT ON</small>Google Play</span>
+      </a>
+    </div>
+    <div class="clouds"></div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="links">
+      <a href="design.html">Game Design</a>
+      <a href="art.html">Art</a>
+      <a href="support.html">Support</a>
+      <a href="privacy/">Privacy Policy</a>
+    </div>
+    <div class="copy">&copy; <span data-year>2026</span> AUgames &middot; <a href="mailto:augames.info@gmail.com">augames.info@gmail.com</a></div>
+  </div>
+</footer>
+</body>
+</html>
